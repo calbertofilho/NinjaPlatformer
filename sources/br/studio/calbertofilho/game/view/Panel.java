@@ -8,6 +8,8 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
+import br.studio.calbertofilho.game.world.TileMap;
+
 /**
  * Classe responsável pela tela de exibição e o controle de fluxo de execução do jogo
  * 
@@ -27,6 +29,7 @@ public class Panel extends JPanel implements Runnable {
 	private Graphics2D graphics;
 	private int targetTime;
 	private long startTime, urdTime, waitTime;
+	private TileMap tileMap;
 
 	public Panel() {
 		super();
@@ -72,12 +75,17 @@ public class Panel extends JPanel implements Runnable {
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		graphics = (Graphics2D) image.getGraphics();
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		tileMap = new TileMap("resources\\assets\\stages\\test.map", 32);
 	}
 
 ////////////////////////////////////////////////////////////////////////////////
-	public void update() {}
+	public void update() {
+		tileMap.update();
+	}
 
-	public void render() {}
+	public void render() {
+		tileMap.render(graphics);
+	}
 
 	public void draw() {
 		graphs = getGraphics();
