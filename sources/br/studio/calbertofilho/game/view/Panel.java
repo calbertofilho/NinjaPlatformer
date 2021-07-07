@@ -9,7 +9,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JPanel;
 
 /**
- * Classe responsável pela tela de exibição e o controle de fluxo da execução do jogo
+ * Classe responsável pela tela de exibição e o controle de fluxo de execução do jogo
  * 
  * @since 07/07/2021
  * @version 1.0
