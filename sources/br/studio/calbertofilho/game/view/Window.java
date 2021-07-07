@@ -3,12 +3,10 @@ package br.studio.calbertofilho.game.view;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-import br.studio.calbertofilho.game.Panel;
-
 /**
  * Classe responsável pela criação e manipulação da janela do jogo
  * 
- * @since 01/07/2021
+ * @since 07/07/2021
  * @version 1.0
  * @author Carlos Alberto Morais Moura Filho<br>
  * Faça sua doação: <a href="https://nubank.com.br/pagar/5wv6g/ZdcePGcCDT">Pix</a>

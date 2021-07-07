@@ -1,4 +1,4 @@
-package br.studio.calbertofilho.game;
+package br.studio.calbertofilho.game.view;
 
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -8,7 +8,14 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-@SuppressWarnings("serial")
+/**
+ * Classe responsável pela tela de exibição e o controle de fluxo da execução do jogo
+ * 
+ * @since 07/07/2021
+ * @version 1.0
+ * @author Carlos Alberto Morais Moura Filho<br>
+ * Faça sua doação: <a href="https://nubank.com.br/pagar/5wv6g/ZdcePGcCDT">Pix</a>
+ */@SuppressWarnings("serial")
 public class Panel extends JPanel implements Runnable {
 
 	private final int WIDTH = 1280, HEIGHT = 720;
