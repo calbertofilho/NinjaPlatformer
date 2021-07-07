@@ -11,11 +11,12 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class Panel extends JPanel implements Runnable {
 
-	private static final int WIDTH = 1280, HEIGHT = 720;
+	private final int WIDTH = 1280, HEIGHT = 720;
 	private final int FPS = 60;
 	private Thread thread;
 	private boolean running;
 	private BufferedImage image;
+	private Graphics graphs;
 	private Graphics2D graphics;
 	private int targetTime;
 	private long startTime, urdTime, waitTime;
@@ -50,8 +51,6 @@ public class Panel extends JPanel implements Runnable {
 			draw();
 	/////////////////////////
 			urdTime = (System.nanoTime() - startTime) / 1000000;
-			if (urdTime > targetTime)
-				urdTime = targetTime;
 			waitTime = targetTime - urdTime;
 			try {
 				Thread.sleep(waitTime);
@@ -74,7 +73,7 @@ public class Panel extends JPanel implements Runnable {
 	public void render() {}
 
 	public void draw() {
-		Graphics graphs = getGraphics();
+		graphs = getGraphics();
 		graphs.drawImage(image, 0, 0, null);
 		graphs.dispose();
 	}
@@ -86,6 +85,15 @@ public class Panel extends JPanel implements Runnable {
 
 	public int getHeight() {
 		return HEIGHT;
+	}
+
+	public double getFPS(double oldTime) {
+		double newTime = System.nanoTime();
+		double delta = -oldTime;
+		double fps = 1 / (delta * 1000);
+		oldTime = newTime;
+		return fps;
+		// usage: getFPS(System.nanoTime());
 	}
 
 }
