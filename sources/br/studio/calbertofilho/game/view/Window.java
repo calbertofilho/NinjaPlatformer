@@ -1,7 +1,5 @@
 package br.studio.calbertofilho.game.view;
 
-import java.awt.image.BufferStrategy;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
@@ -17,7 +15,6 @@ import br.studio.calbertofilho.game.Panel;
  */@SuppressWarnings("serial")
 public class Window extends JFrame {
 
-	private BufferStrategy buffer;
 	private Panel game;
 
 	public Window() {
@@ -35,9 +32,7 @@ public class Window extends JFrame {
 	@Override
 	public void addNotify() {
 		super.addNotify();
-		createBufferStrategy(4);
-		buffer = getBufferStrategy();
-		game = new Panel(buffer, 1280, 720);
+		game = new Panel();
 		setContentPane(game);
 	}
 
