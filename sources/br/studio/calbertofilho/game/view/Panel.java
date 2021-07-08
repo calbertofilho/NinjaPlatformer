@@ -24,7 +24,7 @@ import br.studio.calbertofilho.game.world.TileMap;
  */@SuppressWarnings("serial")
 public class Panel extends JPanel implements Runnable, KeyListener {
 
-	public static final int WIDTH = 400, HEIGHT = 400;
+	public static final int WIDTH = 500, HEIGHT = 400;
 	private final int FPS = 60;
 	private Thread thread;
 	private boolean running;
@@ -104,7 +104,8 @@ public class Panel extends JPanel implements Runnable, KeyListener {
 	}
 
 	public void render() {
-		graphics.setColor(Color.BLACK);
+		graphics.setColor(new Color(135, 206, 250)); //light sky
+//		graphics.setColor(new Color(79, 155, 217));  //dark sky
 		graphics.fillRect(0, 0, WIDTH, HEIGHT);
 		tileMap.render(graphics);
 		player.render(graphics);

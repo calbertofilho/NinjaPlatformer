@@ -8,11 +8,12 @@ import java.io.FileReader;
 
 import javax.imageio.ImageIO;
 
+import br.studio.calbertofilho.game.view.Panel;
 import br.studio.calbertofilho.game.world.objects.Tile;
 
 public class TileMap {
 
-	private int x, y, tileSize, mapWidth, mapHeight, tile, tilePadding, numTilesAcross;
+	private int x, y, minX, minY, maxX, maxY, tileSize, mapWidth, mapHeight, tile, tilePadding, numTilesAcross;
 	private int[][] map;
 	private BufferedReader reader;
 	private String line, delimiters;
@@ -23,11 +24,15 @@ public class TileMap {
 	public TileMap(String path, int tileSize) {
 		this.tileSize = tileSize;
 		tilePadding = 1;
+		maxX = 0;
+		maxY = 0;
 		try {
 			reader = new BufferedReader(new FileReader(path));
 			mapWidth = Integer.parseInt(reader.readLine());
 			mapHeight = Integer.parseInt(reader.readLine());
 			map = new int[mapHeight][mapWidth];
+			minX = Panel.WIDTH - mapWidth * tileSize;
+			minY = Panel.HEIGHT - mapHeight * tileSize;
 			delimiters = "\\s+"; // more than one space
 			for (int row = 0; row < mapHeight; row++) {
 				line = reader.readLine();
@@ -62,6 +67,10 @@ public class TileMap {
 
 	public void setX(int x) {
 		this.x = x;
+		if (x < minX)
+			this.x = minX;
+		if (x > maxX)
+			this.x = maxX;
 	}
 
 	public int getY() {
@@ -70,6 +79,10 @@ public class TileMap {
 
 	public void setY(int y) {
 		this.y = y;
+		if (y < minY)
+			this.y = minY;
+		if (y > maxY)
+			this.y = maxY;
 	}
 
 	public int getColumnTile(int x) {
