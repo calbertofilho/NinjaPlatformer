@@ -52,10 +52,10 @@ public class Player {
 		rightTile = tileMap.getColumnTile((int) (x + width / 2) - 1);
 		topTile = tileMap.getRowTile((int) (y - height / 2));
 		bottomTile = tileMap.getRowTile((int) (y + height / 2) - 1);
-		topLeft = tileMap.getTile(topTile, leftTile) == 0;
-		topRight = tileMap.getTile(topTile, rightTile) == 0;
-		bottomLeft = tileMap.getTile(bottomTile, leftTile) == 0;
-		bottomRight = tileMap.getTile(bottomTile, rightTile) == 0;
+		topLeft = tileMap.isBlocked(topTile, leftTile);
+		topRight = tileMap.isBlocked(topTile, rightTile);
+		bottomLeft = tileMap.isBlocked(bottomTile, leftTile);
+		bottomRight = tileMap.isBlocked(bottomTile, rightTile);
 	}
 
 ////////////////////////////////////////////////////////////////////////////////

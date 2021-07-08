@@ -1,5 +1,6 @@
 package br.studio.calbertofilho.game.view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -80,7 +81,8 @@ public class Panel extends JPanel implements Runnable, KeyListener {
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		graphics = (Graphics2D) image.getGraphics();
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		tileMap = new TileMap("resources\\assets\\stages\\test.map", 32);
+		tileMap = new TileMap("resources\\assets\\stages\\level1.map", 32);
+		tileMap.loadTileSet("resources\\assets\\images\\tiles\\tileset.gif");
 		player = new Player(tileMap);
 		player.setX(50);
 		player.setY(50);
@@ -102,6 +104,8 @@ public class Panel extends JPanel implements Runnable, KeyListener {
 	}
 
 	public void render() {
+		graphics.setColor(Color.BLACK);
+		graphics.fillRect(0, 0, WIDTH, HEIGHT);
 		tileMap.render(graphics);
 		player.render(graphics);
 	}
