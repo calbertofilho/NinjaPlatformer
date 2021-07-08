@@ -32,6 +32,39 @@ public class TileMap {
 		}
 	}
 
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public int getColumnTile(int x) {
+		return x / tileSize;
+	}
+
+	public int getRowTile(int y) {
+		return y / tileSize;
+	}
+
+	public int getTile(int row, int column) {
+		return map[row][column];
+	}
+
+	public int getTileSize() {
+		return tileSize;
+	}
+
+////////////////////////////////////////////////////////////////////////////////
 	public void update() {}
 
 	public void render(Graphics2D graphics) {
@@ -45,5 +78,6 @@ public class TileMap {
 				graphics.fillRect(x + column * tileSize, y + row * tileSize, tileSize, tileSize);
 			}
 	}
+////////////////////////////////////////////////////////////////////////////////
 
 }

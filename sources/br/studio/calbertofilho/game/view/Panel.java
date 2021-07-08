@@ -4,10 +4,13 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
+import br.studio.calbertofilho.game.actors.Player;
 import br.studio.calbertofilho.game.world.TileMap;
 
 /**
@@ -18,9 +21,9 @@ import br.studio.calbertofilho.game.world.TileMap;
  * @author Carlos Alberto Morais Moura Filho<br>
  * Faça sua doação: <a href="https://nubank.com.br/pagar/5wv6g/ZdcePGcCDT">Pix</a>
  */@SuppressWarnings("serial")
-public class Panel extends JPanel implements Runnable {
+public class Panel extends JPanel implements Runnable, KeyListener {
 
-	private final int WIDTH = 1280, HEIGHT = 720;
+	public static final int WIDTH = 400, HEIGHT = 400;
 	private final int FPS = 60;
 	private Thread thread;
 	private boolean running;
@@ -30,6 +33,7 @@ public class Panel extends JPanel implements Runnable {
 	private int targetTime;
 	private long startTime, urdTime, waitTime;
 	private TileMap tileMap;
+	private Player player;
 
 	public Panel() {
 		super();
@@ -48,6 +52,7 @@ public class Panel extends JPanel implements Runnable {
 			thread = new Thread(this, "GameThread");
 			thread.start();
 		}
+		addKeyListener(this);
 	}
 
 	@Override
@@ -76,30 +81,9 @@ public class Panel extends JPanel implements Runnable {
 		graphics = (Graphics2D) image.getGraphics();
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		tileMap = new TileMap("resources\\assets\\stages\\test.map", 32);
-	}
-
-////////////////////////////////////////////////////////////////////////////////
-	public void update() {
-		tileMap.update();
-	}
-
-	public void render() {
-		tileMap.render(graphics);
-	}
-
-	public void draw() {
-		graphs = getGraphics();
-		graphs.drawImage(image, 0, 0, null);
-		graphs.dispose();
-	}
-////////////////////////////////////////////////////////////////////////////////
-
-	public int getWidth() {
-		return WIDTH;
-	}
-
-	public int getHeight() {
-		return HEIGHT;
+		player = new Player(tileMap);
+		player.setX(50);
+		player.setY(50);
 	}
 
 	public double getFPS(double oldTime) {
@@ -109,6 +93,49 @@ public class Panel extends JPanel implements Runnable {
 		oldTime = newTime;
 		return fps;
 		// usage: getFPS(System.nanoTime());
+	}
+
+////////////////////////////////////////////////////////////////////////////////
+	public void update() {
+		tileMap.update();
+		player.update();
+	}
+
+	public void render() {
+		tileMap.render(graphics);
+		player.render(graphics);
+	}
+
+	public void draw() {
+		graphs = getGraphics();
+		graphs.drawImage(image, 0, 0, null);
+		graphs.dispose();
+	}
+////////////////////////////////////////////////////////////////////////////////
+
+	@Override
+	public void keyTyped(KeyEvent e) {}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		int key = e.getKeyCode();
+		if ((key == KeyEvent.VK_LEFT) || (key == KeyEvent.VK_A))
+			player.setLeft(true);
+		if ((key == KeyEvent.VK_RIGHT) || (key == KeyEvent.VK_D))
+			player.setRight(true);
+		if ((key == KeyEvent.VK_UP) || (key == KeyEvent.VK_W))
+			player.setJumping(true);
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		int key = e.getKeyCode();
+		if ((key == KeyEvent.VK_LEFT) || (key == KeyEvent.VK_A))
+			player.setLeft(false);
+		if ((key == KeyEvent.VK_RIGHT) || (key == KeyEvent.VK_D))
+			player.setRight(false);
+		if ((key == KeyEvent.VK_UP) || (key == KeyEvent.VK_W))
+			player.setJumping(false);
 	}
 
 }
