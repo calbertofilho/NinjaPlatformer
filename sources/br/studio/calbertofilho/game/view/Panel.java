@@ -25,16 +25,17 @@ import br.studio.calbertofilho.game.world.TileMap;
 public class Panel extends JPanel implements Runnable, KeyListener {
 
 	public static final int WIDTH = 500, HEIGHT = 400;
-	private final int FPS = 60;
 	private Thread thread;
 	private boolean running;
 	private BufferedImage image;
 	private Graphics graphs;
 	private Graphics2D graphics;
-	private int targetTime;
-	private long startTime, urdTime, waitTime;
 	private TileMap tileMap;
 	private Player player;
+	private final int TARGET_FPS = 60;
+	private double averageFPS;
+	private long startTime, URDTimeMillis, targetTime, waitTime, totalTime;
+	private int frameCount, maxFrameCount;
 
 	public Panel() {
 		super();
@@ -43,7 +44,6 @@ public class Panel extends JPanel implements Runnable, KeyListener {
 		requestFocus();
 		setDoubleBuffered(true);
 		running = false;
-		targetTime = 1000 / FPS;
 	}
 
 	@Override
@@ -66,12 +66,19 @@ public class Panel extends JPanel implements Runnable, KeyListener {
 			render();
 			draw();
 	/////////////////////////
-			urdTime = (System.nanoTime() - startTime) / 1000000;
-			waitTime = targetTime - urdTime;
+			URDTimeMillis = (System.nanoTime() - startTime) / 1000000;
+			waitTime = (targetTime - URDTimeMillis) > 0 ? (targetTime - URDTimeMillis) : 0;
 			try {
 				Thread.sleep(waitTime);
 			} catch (Exception e) {
 				e.printStackTrace();
+			}
+			totalTime += System.nanoTime() - startTime;
+			frameCount++;
+			if (frameCount == maxFrameCount) {
+				averageFPS = 1000.0 / ((totalTime / frameCount) / 1000000);
+				frameCount = 0;
+				totalTime = 0;
 			}
 		}
 	}
@@ -81,6 +88,10 @@ public class Panel extends JPanel implements Runnable, KeyListener {
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		graphics = (Graphics2D) image.getGraphics();
 		graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		totalTime = 0;
+		frameCount = 0;
+		maxFrameCount = TARGET_FPS;
+		targetTime = 1000 / TARGET_FPS;
 		tileMap = new TileMap("resources\\assets\\stages\\level1.map", 32);
 		tileMap.loadTileSet("resources\\assets\\images\\tiles\\tileset.gif");
 		player = new Player(tileMap);
@@ -88,35 +99,29 @@ public class Panel extends JPanel implements Runnable, KeyListener {
 		player.setY(50);
 	}
 
-	public double getFPS(double oldTime) {
-		double newTime = System.nanoTime();
-		double delta = -oldTime;
-		double fps = 1 / (delta * 1000);
-		oldTime = newTime;
-		return fps;
-		// usage: getFPS(System.nanoTime());
-	}
-
 ////////////////////////////////////////////////////////////////////////////////
-	public void update() {
+	private void update() {
 		tileMap.update();
 		player.update();
 	}
 
-	public void render() {
-		graphics.setColor(new Color(135, 206, 250)); //light sky
-//		graphics.setColor(new Color(79, 155, 217));  //dark sky
+	private void render() {
+		graphics.setColor(new Color(79, 155, 217));  //dark sky: new Color(79, 155, 217)       light sky: new Color(135, 206, 250)
 		graphics.fillRect(0, 0, WIDTH, HEIGHT);
 		tileMap.render(graphics);
 		player.render(graphics);
 	}
 
-	public void draw() {
-		graphs = getGraphics();
+	private void draw() {
+		graphs = this.getGraphics();
 		graphs.drawImage(image, 0, 0, null);
 		graphs.dispose();
 	}
 ////////////////////////////////////////////////////////////////////////////////
+
+	public double getFPS() {
+		return averageFPS;
+	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {}
