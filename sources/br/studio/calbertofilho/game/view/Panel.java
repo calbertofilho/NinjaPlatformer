@@ -33,7 +33,7 @@ public class Panel extends JPanel implements Runnable, KeyListener {
 	private TileMap tileMap;
 	private Player player;
 	private final int TARGET_FPS = 60;
-	private double averageFPS;
+	private static double averageFPS;
 	private long startTime, URDTimeMillis, targetTime, waitTime, totalTime;
 	private int frameCount, maxFrameCount;
 
@@ -109,7 +109,11 @@ public class Panel extends JPanel implements Runnable, KeyListener {
 		graphics.setColor(new Color(79, 155, 217));  //dark sky: new Color(79, 155, 217)       light sky: new Color(135, 206, 250)
 		graphics.fillRect(0, 0, WIDTH, HEIGHT);
 		tileMap.render(graphics);
+		graphics.setColor(Color.WHITE);
 		player.render(graphics);
+		//show fps counter
+		String text = String.format("FPS: %.2f", getFPS());
+		graphics.drawString(text, (WIDTH - graphics.getFontMetrics().stringWidth(text)) - 5, graphics.getFontMetrics().getHeight());
 	}
 
 	private void draw() {
@@ -119,7 +123,7 @@ public class Panel extends JPanel implements Runnable, KeyListener {
 	}
 ////////////////////////////////////////////////////////////////////////////////
 
-	public double getFPS() {
+	public static double getFPS() {
 		return averageFPS;
 	}
 
