@@ -109,9 +109,9 @@ public class Panel extends JPanel implements Runnable, KeyListener {
 		graphics.setColor(new Color(79, 155, 217));  //dark sky: new Color(79, 155, 217)       light sky: new Color(135, 206, 250)
 		graphics.fillRect(0, 0, WIDTH, HEIGHT);
 		tileMap.render(graphics);
-		graphics.setColor(Color.WHITE);
 		player.render(graphics);
 		//show fps counter
+		graphics.setColor(Color.WHITE);
 		String text = String.format("FPS: %.2f", getFPS());
 		graphics.drawString(text, (WIDTH - graphics.getFontMetrics().stringWidth(text)) - 5, graphics.getFontMetrics().getHeight());
 	}
