@@ -1,4 +1,4 @@
-# NinjaPlatformer
+# NinjaPlatformer #
 
 ## Getting Started
 
